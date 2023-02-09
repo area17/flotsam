@@ -49,7 +49,6 @@ You'll also need some very basic styles - see [Styling](#styling).
 
 ### Static setup
 
-
 ```JavaScript
 const typeahead = new flotsam({
     // input element you want to attach to
@@ -60,7 +59,7 @@ const typeahead = new flotsam({
 ```
 
 **NB** currently filtering from a static list uses `[String.prototype.includes()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/includes)` and so looks for exact string matches - e.g. "and" will match "and", "stand", "mandatory" etc.
- 
+
 ### Dynamic setup
 
 ```JavaScript
@@ -71,7 +70,7 @@ const typeahead = new flotsam({
     // input element you want to attach to
     el: document.querySelector('input'),
 
-    // textValue is the input/search value 
+    // textValue is the input/search value
     getData: (textValue) => {
         fetchController.abort();
         fetchController = new AbortController();
@@ -84,7 +83,7 @@ const typeahead = new flotsam({
         url.search = new URLSearchParams(params).toString();
 
         return fetch(
-          url, 
+          url,
           {
             method: 'get',
             signal: fetchSignal,
@@ -154,35 +153,35 @@ const typeahead = new flotsam({
     data: [...data],
 });
 
-typeahead.addEventListener('init', instanceData => {
+typeahead.on('init', instanceData => {
     // flotsam init
 });
 
-typeahead.addEventListener('openModal', (instanceData) => {
+typeahead.on('openModal', (instanceData) => {
     // modal opened
 });
 
-typeahead.addEventListener('closeModal', (instanceData) => {
+typeahead.on('closeModal', (instanceData) => {
     // modal closed
 });
 
-typeahead.addEventListener('selectKey', (instanceData) => {
+typeahead.on('selectKey', (instanceData) => {
     // selected item (with keyboard)
 });
 
-typeahead.addEventListener('resultClicked', (instanceData) => {
+typeahead.on('resultClicked', (instanceData) => {
     // result clicked/return key pressed on selected result
 });
 
-typeahead.addEventListener('loadingData', (instanceData) => {
+typeahead.on('loadingData', (instanceData) => {
     // loading data
 });
 
-typeahead.addEventListener('loadedData', (instanceData) => {
+typeahead.on('loadedData', (instanceData) => {
     // loaded
 });
 
-typeahead.addEventListener('disabled', (instanceData) => {
+typeahead.on('disabled', (instanceData) => {
     // flotsam disabled
 });
 ```
@@ -307,7 +306,7 @@ You will likely want to replace and write your own, but the imported styles will
 ### Nice to haves
 
 -   Custom filterBy and sortBy functions before we generate autocomplete list items
--   Custom regex for the text highlight on autocomplete 
+-   Custom regex for the text highlight on autocomplete
 
 ---
 
