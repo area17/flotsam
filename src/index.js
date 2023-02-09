@@ -18,10 +18,20 @@ class flotsam extends EventComponent {
         this.$input = options.el
         this.data = options.data ? options.data : null
         this.minChars = options.minChars ? options.minChars : 2
-        this.inputPreview = typeof(options.inputPreview) === 'boolean' ? options.inputPreview : true
-        this.getData = typeof(options.getData) === 'function' ? options.getData : null
-        this.markResults = typeof(options.markResults) === 'boolean' ? options.markResults : true
-        this.submitOnReturn = typeof(options.submitOnReturn) === 'boolean' ? options.submitOnReturn : true
+        this.inputPreview =
+            typeof options.inputPreview === 'boolean'
+                ? options.inputPreview
+                : true
+        this.getData =
+            typeof options.getData === 'function' ? options.getData : null
+        this.markResults =
+            typeof options.markResults === 'boolean'
+                ? options.markResults
+                : true
+        this.submitOnReturn =
+            typeof options.submitOnReturn === 'boolean'
+                ? options.submitOnReturn
+                : true
 
         this.hint = options.hint
             ? options.hint
@@ -137,7 +147,7 @@ class flotsam extends EventComponent {
     generateStatus() {
         return `
             <div id="status-${this.uid}" aria-role='status' aria-live="polite" class="flotsam-modal__status">
-                
+
             </div>
         `
     }
@@ -176,7 +186,10 @@ class flotsam extends EventComponent {
 
     showEmptyState() {
         this.removeListItems()
-        const str = this.noResultsText.replace('::term::', `<strong>"${this.value}"</strong>`)
+        const str = this.noResultsText.replace(
+            '::term::',
+            `<strong>"${this.value}"</strong>`
+        )
         const emptyHtml = `<div>${str}</div>`
         this.$empty.innerHTML = emptyHtml
         this.$empty.style.display = 'block'
@@ -271,7 +284,7 @@ class flotsam extends EventComponent {
         } else if (e.keyCode == '13') {
             // enter
             e.preventDefault()
-            this.resultClicked(this.currentSelected);
+            this.resultClicked(this.currentSelected)
             this.closeModal()
             if (this.submitOnReturn) {
                 this.$input.closest('form').submit()
@@ -345,9 +358,9 @@ class flotsam extends EventComponent {
         return `
         <div class="flotsam-modal" id="modal-${this.uid}" >
             <div class="flotsam-modal__inner">
-                <ul 
+                <ul
                     class="flotsam-modal__list"
-                    role="listbox" 
+                    role="listbox"
                     id="modal-${this.uid}-list">
                 </ul>
                 <div class="flotsam-modal__empty" style="display: none"></div>
@@ -367,11 +380,7 @@ class flotsam extends EventComponent {
             if (this.markResults) {
                 const regex = new RegExp(this.value, 'gi')
                 response = item.replace(regex, (str) => {
-                    return (
-                        `<mark>` +
-                        str +
-                        '</mark>'
-                    )
+                    return `<mark>` + str + '</mark>'
                 })
             }
             const posIndex = index + 1
@@ -388,7 +397,6 @@ class flotsam extends EventComponent {
         const listItems = [...this.list.querySelectorAll('li')]
         listItems.forEach((item, index) => {
             item.addEventListener('click', () => {
-                this.setInput(item.innerText)
                 this.resultClicked(index)
                 this.closeModal()
             })
@@ -407,15 +415,13 @@ class flotsam extends EventComponent {
         if (index) {
             const item = this.list.querySelectorAll('li')[index]
             if (item) {
-                // !!EVENT!! on return key
                 super.dispatch('resultClicked', {
                     selected: item.textContent.trim(),
                     value: this.value,
                     input: this.$input,
                     modal: this.$modal,
-                    //flotsam: this,
-                    //options: this.options,
                 })
+                this.setInput(item.innerText)
             }
         }
     }
