@@ -3,6 +3,10 @@ import './styles.css'
 
 const OPEN_CLASS = 'flotsam-modal--is-open'
 
+// defaults
+const hintDefault = `When autocomplete results are available, use up and down arrows to review and enter to select. Touch device users, explore by touch or with swipe gestures.`
+const emptyDefault = `Sorry there are no results for ::term:: please search again.`
+
 class flotsam extends EventComponent {
     ////////////////////////////////////////////////////
     // construct
@@ -12,42 +16,58 @@ class flotsam extends EventComponent {
         // adding core events module
         super()
 
-        // for debugging
+        // for debugging view the options
         this.options = options
 
+        // el reference
         this.$input = options.el
+
+        // static data array
         this.data = options.data ? options.data : null
+
+        // minimum characters required to use ajax/show autocomplete
         this.minChars = options.minChars ? options.minChars : 2
+
+        // interaction of setting input value on arrow key
         this.inputPreview =
             typeof options.inputPreview === 'boolean'
                 ? options.inputPreview
                 : true
+
+        // promise style fn to get data
         this.getData =
             typeof options.getData === 'function' ? options.getData : null
+
+        // to add span attributes around string value of selected chars
         this.markResults =
             typeof options.markResults === 'boolean'
                 ? options.markResults
                 : true
+
+        // disable the instant submission on pressing enter to select listbox value
         this.submitOnReturn =
             typeof options.submitOnReturn === 'boolean'
                 ? options.submitOnReturn
                 : true
 
-        this.hint = options.hint
-            ? options.hint
-            : 'When autocomplete results are available, use up and down arrows to review and enter to select. Touch device users, explore by touch or with swipe gestures.'
+        // description of autocomplete functionality
+        this.hint = options.hint ? options.hint : hintDefault
 
+        // empty state visual content
         this.noResultsText = options.noResultsText
             ? options.noResultsText
-            : 'Sorry there are no results for ::term:: please search again.'
+            : emptyDefault
 
-        this.isEmpty = true
+        // modal can have an empty state (currently only true)
         this.hasEmptyState = true
+
+        // native flotsom state
         this.filteredData = []
-
-        // native state
         this.isOpen = false
+        this.currentSelected = null
+        this.isDisabled = false
 
+        // init the project!
         this.init()
     }
 
@@ -100,17 +120,14 @@ class flotsam extends EventComponent {
                     super.dispatch('loadingData', {
                         input: this.$input,
                         modal: this.$modal,
-                        //flotsam: this,
-                        //options: this.options,
                     })
+
                     this.getData(this.value).then((result) => {
                         this.filteredData = result
 
                         super.dispatch('loadedData', {
                             input: this.$input,
                             modal: this.$modal,
-                            //flotsam: this,
-                            //options: this.options,
                         })
 
                         this.update(true)
@@ -147,7 +164,6 @@ class flotsam extends EventComponent {
     generateStatus() {
         return `
             <div id="status-${this.uid}" aria-role='status' aria-live="polite" class="flotsam-modal__status">
-
             </div>
         `
     }
@@ -186,6 +202,8 @@ class flotsam extends EventComponent {
 
     showEmptyState() {
         this.removeListItems()
+
+        // replace fn for ::term:: in empty string with value
         const str = this.noResultsText.replace(
             '::term::',
             `<strong>"${this.value}"</strong>`
@@ -228,8 +246,6 @@ class flotsam extends EventComponent {
         super.dispatch('openModal', {
             input: this.$input,
             modal: this.$modal,
-            //flotsam: this,
-            //options: this.options,
         })
     }
 
@@ -254,8 +270,6 @@ class flotsam extends EventComponent {
         super.dispatch('closeModal', {
             input: this.$input,
             modal: this.$modal,
-            //flotsam: this,
-            //options: this.options,
         })
     }
     ////////////////////////////////////////////////////
@@ -316,8 +330,6 @@ class flotsam extends EventComponent {
                     value: this.value,
                     input: this.$input,
                     modal: this.$modal,
-                    //flotsam: this,
-                    //options: this.options,
                 })
             } else {
                 item.classList.remove('flotsam-modal__selected-item')
@@ -403,7 +415,7 @@ class flotsam extends EventComponent {
         })
     }
 
-    // quick way to breka down list
+    // quick way to break down list
     removeListItems() {
         this.list.innerHTML = ''
     }
@@ -446,8 +458,6 @@ class flotsam extends EventComponent {
         super.dispatch('disabled', {
             input: this.$input,
             modal: this.$modal,
-            //flotsam: this,
-            //options: this.options,
         })
     }
 
@@ -470,12 +480,6 @@ class flotsam extends EventComponent {
     // init fn - run on singleton creation
     ////////////////////////////////////////////////////
     init() {
-        this._self = this // so we can remove event listeners cleanly
-
-        // state
-        this.currentSelected = null
-        this.isDisabled = false
-
         if (!this.data && !this.getData) {
             this.isDisabled = true
             console.error('flotsam: no data specified', this)
@@ -483,6 +487,7 @@ class flotsam extends EventComponent {
         }
 
         this.setUp()
+
         // inject the modal onto the page and get an instance of it
         this.initModal()
 
@@ -494,8 +499,6 @@ class flotsam extends EventComponent {
             super.dispatch('init', {
                 input: this.$input,
                 modal: this.$modal,
-                //flotsam: this,
-                //options: this.options,
             })
         }, 0)
     }
