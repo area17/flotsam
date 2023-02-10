@@ -1,5 +1,4 @@
 import EventComponent from './EventComponent'
-import './styles.css'
 
 const OPEN_CLASS = 'flotsam-modal--is-open'
 
@@ -100,12 +99,14 @@ class flotsam extends EventComponent {
         // grab an instance of elems to use later
         this.$modal = document.querySelector(`#modal-${this.uid}`)
         this.$status = document.querySelector(`#status-${this.uid}`)
-        this.list = this.$modal.querySelector('.flotsam-modal__list')
-        this.$empty = this.$modal.querySelector('.flotsam-modal__empty')
 
-        // intial modal styles
-        this.$modal.style.pointerEvents = 'none'
-        this.$modal.style.visibility = 'hidden'
+        setTimeout(() => {
+            this.list = this.$modal.querySelector('.flotsam-modal__list')
+            this.$empty = this.$modal.querySelector('.flotsam-modal__empty')
+            // intial modal styles
+            this.$modal.style.pointerEvents = 'none'
+            this.$modal.style.visibility = 'hidden'
+        }, 0)
     }
 
     initInputCheck() {
