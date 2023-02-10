@@ -14,7 +14,8 @@
     "scripts": {
         "build": "microbundle --css",
         "dev": "microbundle watch --css",
-        "test": "jest"
+        "test": "jest",
+        "format": "prettier --write . '!dist/**/*'"
     },
     "keywords": [
         "autocomplete",
