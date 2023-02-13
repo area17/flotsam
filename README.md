@@ -36,13 +36,13 @@ This library is inspired and aims to build upon [alphagov/accessible-autocomplet
 Firstly, install via npm:
 
 ```
-$ npm install flotsam-autocomplete
+$ npm install @area17/flotsam-autocomplete
 ```
 
 Import into your JavaScript by:
 
 ```
-import flotsam from 'flotsam-autocomplete'
+import flotsam from '@area17/flotsam-autocomplete'
 ```
 
 You'll also need some very basic styles - see [Styling](#styling).
