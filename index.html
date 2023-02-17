@@ -488,10 +488,11 @@ const typeahead = new flotsam({
 
                 const typeahead3 = new flotsam({
                     el: document.querySelectorAll('input')[3],
+                    data: data.en,
                     markResults: false,
                     getData: (textValue) => {
                         const results = fuzzysort
-                            .go(textValue, data)
+                            .go(textValue, data.en)
                             .map((result) =>
                                 fuzzysort.highlight(
                                     result,
