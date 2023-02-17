@@ -325,17 +325,25 @@ class flotsam extends EventComponent {
                     this.setInput(item.innerText)
                 }
 
-                // !!EVENT!! on select key
                 super.dispatch('selectKey', {
                     selected: item.textContent.trim(),
                     value: this.value,
                     input: this.$input,
                     modal: this.$modal,
                 })
+
+                this.scrollItemIntoView(item)
             } else {
                 item.classList.remove('flotsam-modal__selected-item')
                 item.setAttribute('aria-selected', 'false')
             }
+        })
+    }
+
+    scrollItemIntoView(item) {
+        item.scrollIntoView({
+            block: 'nearest',
+            inline: 'start',
         })
     }
 
